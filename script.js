@@ -1,6 +1,21 @@
 // Footer year
 document.getElementById("year").textContent = new Date().getFullYear();
 
+// Header goes solid once you scroll past the hero
+const header = document.querySelector(".site-header");
+const hero = document.querySelector(".hero");
+
+function updateHeader() {
+  const trigger = hero ? hero.offsetHeight - 80 : 80;
+  if (window.scrollY > trigger) {
+    header.classList.add("is-scrolled");
+  } else {
+    header.classList.remove("is-scrolled");
+  }
+}
+window.addEventListener("scroll", updateHeader, { passive: true });
+updateHeader();
+
 // WhatsApp number for booking requests — update if this changes.
 const WHATSAPP_NUMBER = "6282229570552";
 

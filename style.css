@@ -137,14 +137,29 @@ ul { margin: 0; padding: 0; list-style: none; }
   color: var(--olive);
 }
 
-/* Header */
+/* Header — transparent over the hero image, solid once scrolled */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 20;
-  background: rgba(234, 228, 198, 0.92);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.site-header .logo,
+.site-header .main-nav a:not(.nav-cta) {
+  color: var(--panel);
+}
+.site-header.is-scrolled {
+  background: rgba(234, 228, 198, 0.94);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--rule);
+  border-bottom-color: var(--rule);
+}
+.site-header.is-scrolled .logo,
+.site-header.is-scrolled .main-nav a:not(.nav-cta) {
+  color: var(--ink);
 }
 .header-inner {
   display: flex;
@@ -179,34 +194,44 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .nav-cta:hover { background: var(--paddy-dark); }
 
-/* Hero */
+/* Hero — full-bleed photo, centered light text, nav overlaid on top */
 .hero {
-  padding: 56px 0 72px;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-color: var(--ink);
+}
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 22, 15, 0.55) 0%,
+    rgba(20, 22, 15, 0.25) 38%,
+    rgba(20, 22, 15, 0.15) 60%,
+    rgba(20, 22, 15, 0.6) 100%
+  );
 }
 .hero-inner {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 48px;
-  align-items: center;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-top: 60px;
 }
-.hero-media { min-height: 420px; }
 .eyebrow {
   font-family: var(--font-body);
-  color: var(--paddy-dark);
+  color: var(--cream);
   font-size: 0.9rem;
+  letter-spacing: 0.02em;
   margin-bottom: 0.9em;
-
-  
-.hero-media, .room-media, .location-media {
-  object-fit: cover;
-  width: 100%;
-  display: block;
 }
-}
-.hero-copy h1 {
+.hero h1 {
+  color: var(--panel);
   animation: rise-in 0.7s ease both;
 }
 @keyframes rise-in {
@@ -215,19 +240,55 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .hero-lede {
   font-size: 1.08rem;
-  color: var(--ink);
-  max-width: 46ch;
+  color: var(--panel);
+  max-width: 50ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 .hero-actions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  justify-content: center;
   margin: 1.3em 0 1em;
 }
+.hero .btn-ghost {
+  color: var(--panel);
+  border-color: var(--panel);
+}
+.hero .btn-ghost:hover { border-color: var(--clay); color: var(--clay); }
 .hero-note {
   font-size: 0.88rem;
-  color: var(--olive);
+  color: var(--cream);
+  opacity: 0.85;
   margin-top: 0.6em;
+}
+
+/* Gallery break — full-bleed photo band between sections */
+.gallery-break {
+  position: relative;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: var(--ink);
+}
+.gallery-break-text {
+  position: relative;
+  z-index: 1;
+  color: var(--panel);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  max-width: 44ch;
+  text-align: center;
+  margin: 0 auto;
+}
+@media (max-width: 860px) {
+  .gallery-break { background-attachment: scroll; }
 }
 
 /* Intro */
@@ -270,6 +331,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 .room-row:first-of-type { border-top: none; padding-top: 0; }
 .room-row--reverse .room-media { order: 2; }
 .room-media { min-height: 300px; }
+img.room-media {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
 .room-price {
   font-family: var(--font-display);
   font-size: 1.2rem;
@@ -333,6 +401,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 .location-facts li:first-child { border-top: none; }
 .location-note { font-size: 0.85rem; color: var(--olive); margin-top: 1em; }
 .location-media { min-height: 300px; }
+img.location-media {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
 
 /* Booking */
 .booking { padding: 64px 0 88px; border-top: 1px solid var(--rule); background: var(--panel); }
